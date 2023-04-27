@@ -4,19 +4,17 @@
 #define END 122 // 126
 #define LENGTH 4
 
-std::string recursiveBrute(std::string cipher, std::string str="", bool verbose=true) {
+std::string recursiveBrute(std::string cipher, bool verbose=true, std::string currStr="") {
     std::string found;
-    if (str.length() < LENGTH) {
+    if (currStr.length() < LENGTH) {
         for (int asciiCode = START; asciiCode <= END; ++asciiCode) {
-            std::string next = str + char(asciiCode);
-            if (verbose) std::cout << "\r" << "current: " << next << std::flush;
-            if (next == cipher) {
-                // if (verbose) std::cout << "password found: " << next << std::endl;
+            std::string nextStr = currStr + char(asciiCode);
+            if (verbose) std::cout << "\r" << "current: " << nextStr << std::flush;
+            if (nextStr == cipher) {
                 if (verbose) std::cout << "\n" << std::endl;
-                return next;
+                return nextStr;
             }
-
-            found = recursiveBrute(cipher, next, verbose);
+            found = recursiveBrute(cipher, verbose, nextStr);
             if (found.length() > 0) {
                 return found;
             }
@@ -26,8 +24,7 @@ std::string recursiveBrute(std::string cipher, std::string str="", bool verbose=
 }
 
 void bruteForce(std::string cipher, bool verbose) {
-    std::string str;
-    std::string found = recursiveBrute(cipher=cipher, str=str, verbose=verbose);
+    std::string found = recursiveBrute(cipher=cipher, verbose=verbose);
     if (found.length() > 0) {
         std::cout << "password found: " << found << std::endl;
     } else {
