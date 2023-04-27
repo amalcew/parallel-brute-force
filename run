@@ -1,0 +1,10 @@
+#!/bin/bash
+mkdir -p /tmp/bf
+
+g++ $1 -o /tmp/bf/output
+chmod +x /tmp/bf/output
+# echo "sequential execution"
+/tmp/bf/output
+# time /tmp/bf/output $2
+
+rm -rf /tmp/bf
