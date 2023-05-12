@@ -2,7 +2,7 @@
 
 #define START 97 //33
 #define END 122 // 126
-#define LENGTH 2
+#define LENGTH 4
 
 std::string recursiveBrute(std::string cipher, bool verbose=true, bool flsh=true, std::string currStr="") {
     std::string found;
@@ -34,9 +34,9 @@ void bruteForce(std::string cipher, bool verbose, bool flsh) {
 }
 
 int main() {
-    std::string plain = "hjkl";
-    bool verbose = true;
-    bool flsh = false;
+    std::string plain = "zzzz";
+    bool verbose = false;
+    bool flsh = true;
     bruteForce(plain, verbose, flsh);
     return 0;
 }
