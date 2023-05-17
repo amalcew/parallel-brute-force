@@ -1,13 +1,13 @@
 #include <iostream>
 
-#define START 97 //33
-#define END 122 // 126
-#define LENGTH 4
+#define ASCII_START 97 // a
+#define ASCII_END 122  // z
+#define PASS_LEN 4
 
 std::string recursiveBrute(std::string cipher, bool verbose=true, bool flsh=true, std::string currStr="") {
     std::string found;
-    if (currStr.length() < LENGTH) {
-        for (int asciiCode = START; asciiCode <= END; ++asciiCode) {
+    if (currStr.length() < PASS_LEN) {
+        for (int asciiCode = ASCII_START; asciiCode <= ASCII_END; ++asciiCode) {
             std::string nextStr = currStr + char(asciiCode);
             if (verbose && flsh) std::cout << "\r" << "current: " << nextStr << std::flush;
             if (verbose && !flsh) std::cout << nextStr << std::endl;
