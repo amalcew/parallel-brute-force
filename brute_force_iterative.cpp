@@ -55,6 +55,7 @@ std::string iterativeBrute(std::string cipher, bool verbose=true, bool flsh=true
             return currStr;
         }
         iterator(charArr);
+        //usleep(500000);
     }
     return "";
 }
