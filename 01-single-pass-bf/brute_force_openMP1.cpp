@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cmath>
 #include <unistd.h>
+#include <omp.h>
 
 #define ASCII_START 97 // a
 #define ASCII_END 122  // z
@@ -40,42 +41,53 @@ int* iterator(int* arr, int len) {
     return arr;
 }
 
-std::string iterativeBrute(std::string cipher, bool verbose=true, bool flsh=true) {
+void iterativeBrute(std::string cipher, bool verbose=true, bool flsh=true) {
+    int len;
+    bool found = false;
+    #pragma omp parallel for shared(found) private(len)
     // iterate over possible pass lengths
-    for (int len = 1; len <= PASS_LEN; len++) {
+    for (len = 1; len <= PASS_LEN; len++) {
+        if (found) continue;
         long int totalComb = std::pow((ASCII_END - ASCII_START + 1), len);
         int charArr [len];
         std::fill_n(charArr, len, ASCII_START);
         // iterate over all possible combinations for current length of the password
         for (int i = 0; i < totalComb; i++) {
+            if (found) continue;
             std::string currStr;
             for (int x : charArr) currStr += char(x);
             if (verbose && flsh) std::cout << "\r" << "current: " << currStr << std::flush;
             if (verbose && !flsh) std::cout << currStr << std::endl;
             if (currStr == cipher) {
                 if (verbose) std::cout << "\n" << std::endl;
-                return currStr;
+                // return currStr;
+                std::cout << "password found: " << currStr << std::endl;
+                found = true;
+                break;
             }
             iterator(charArr, len);
-            //usleep(100000);
+            // usleep(100000);
         }
     }
-    return "";
+    // return "";
 }
 
 void bruteForce(std::string cipher, bool verbose, bool flsh) {
-    std::string found = iterativeBrute(cipher=cipher, verbose=verbose, flsh=flsh);
-    if (!found.empty()) {
-        std::cout << "password found: " << found << std::endl;
-    } else {
-        std::cout << "password not found!" << std::endl;
-    }
+
+    // std::string found = iterativeBrute(cipher=cipher, verbose=verbose, flsh=flsh);
+    // if (!found.empty()) {
+    //     std::cout << "password found: " << found << std::endl;
+    // } else {
+    //     std::cout << "password not found!" << std::endl;
+    // }
+
+    iterativeBrute(cipher=cipher, verbose=verbose, flsh=flsh);
 }
 
 int main() {
     std::string plain = "abcdefg";
     bool verbose = false;
-    bool flsh = false;
+    bool flsh = true;
     bruteForce(plain, verbose, flsh);
     return 0;
 }
