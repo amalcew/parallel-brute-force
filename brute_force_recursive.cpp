@@ -1,4 +1,5 @@
 #include <iostream>
+#include <unistd.h>
 
 #define ASCII_START 97 // a
 #define ASCII_END 122  // z
@@ -20,6 +21,7 @@ std::string recursiveBrute(std::string cipher, bool verbose=true, bool flsh=true
                 return found;
             }
         }
+        //usleep(100000);
     }
     return "";
 }
