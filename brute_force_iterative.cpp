@@ -70,8 +70,8 @@ void bruteForce(std::string cipher, bool verbose, bool flsh) {
 }
 
 int main() {
-    std::string plain = "hjkl";
-    bool verbose = true;
+    std::string plain = "fghjkl";
+    bool verbose = false;
     bool flsh = false;
     bruteForce(plain, verbose, flsh);
     return 0;
