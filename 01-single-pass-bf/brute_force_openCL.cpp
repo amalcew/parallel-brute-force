@@ -35,7 +35,7 @@ int* iterator(int* arr, int len) {
                     arr[y] = ASCII_START;
                 }
             }
-        // if carry haven't been detected, add 1 to the last bit
+            // if carry haven't been detected, add 1 to the last bit
         } else if (x == len-1) {
             arr[x] += 1;
         };
@@ -61,9 +61,9 @@ void iterativeBrute(std::string cipher, bool verbose=true, bool flsh=true) {
         // iterate over all prebuilt password strings, starting from the end
         int i;
         omp_set_dynamic(0);
-        #pragma omp parallel for shared(found) private(i) num_threads(THREADS)
+#pragma omp parallel for shared(found) private(i) num_threads(THREADS)
         for (i = ALPHABET_SIZE - 1; i >= 0; i--) {
-        // for (i = 0; i < ALPHABET_SIZE; i++) {
+            // for (i = 0; i < ALPHABET_SIZE; i++) {
             if (found) continue;
             // iterate over all possible combinations for current string
             for (int j = 0; j < totalComb; j++) {
