@@ -6,6 +6,7 @@
 #define ASCII_START 97 // a
 #define ASCII_END 122  // z
 #define PASS_LEN 8
+#define THREADS 12
 #define ALPHABET_SIZE (ASCII_END - ASCII_START + 1)
 
 int* iterator(int* arr, int len) {
@@ -59,7 +60,8 @@ void iterativeBrute(std::string cipher, bool verbose=true, bool flsh=true) {
         }
         // iterate over all prebuilt password strings, starting from the end
         int i;
-        #pragma omp parallel for shared(found) private(i)
+        omp_set_dynamic(0);
+        #pragma omp parallel for shared(found) private(i) num_threads(THREADS)
         for (i = ALPHABET_SIZE - 1; i >= 0; i--) {
         // for (i = 0; i < ALPHABET_SIZE; i++) {
             if (found) continue;
