@@ -1,0 +1,10 @@
+#!/bin/bash
+mkdir -p /tmp/bf
+
+g++ $1 -o /tmp/bf/output -lOpenCL
+chmod +x /tmp/bf/output
+echo "parallel execution"
+#/tmp/bf/output
+time /tmp/bf/output
+
+rm -rf /tmp/bf
