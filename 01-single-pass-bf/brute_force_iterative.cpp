@@ -4,7 +4,7 @@
 
 #define ASCII_START 97 // a
 #define ASCII_END 122  // z
-#define PASS_LEN 7
+#define PASS_LEN 8
 
 int* iterator(int* arr, int len) {
     for (int x = 0; x < len; x++) {
@@ -73,7 +73,7 @@ void bruteForce(std::string cipher, bool verbose, bool flsh) {
 }
 
 int main() {
-    std::string plain = "abcdefg";
+    std::string plain = "ssssss";
     bool verbose = false;
     bool flsh = false;
     bruteForce(plain, verbose, flsh);
