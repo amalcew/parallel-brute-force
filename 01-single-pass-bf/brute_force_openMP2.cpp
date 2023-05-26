@@ -5,7 +5,7 @@
 
 #define ASCII_START 97 // a
 #define ASCII_END 122  // z
-#define PASS_LEN 7
+#define PASS_LEN 8
 #define ALPHABET_SIZE (ASCII_END - ASCII_START + 1)
 
 int* iterator(int* arr, int len) {
@@ -49,29 +49,21 @@ void iterativeBrute(std::string cipher, bool verbose=true, bool flsh=true) {
         if (found) continue;
         long int totalComb = (std::pow((ALPHABET_SIZE), len) / ALPHABET_SIZE);
 
+        // split possible combinations starting with given letter, (i.e. 'aaaaa', 'baaaa', 'caaaa', ..., 'zaaaa')
+        // optimizes the algorithm for long passwords
         int charArr [ASCII_END - ASCII_START + 1][len];
         int val = ASCII_START;
         for (int i = 0; i < ALPHABET_SIZE; i++) {
             charArr[i][0] = val++;
             for (int j = 1; j < len; j++) charArr[i][j] = ASCII_START;
         }
-        /*
-        for (int i = 0; i < ASCII_END - ASCII_START + 1; i++) {
-            for (int j = 0; j < len; j++) {
-                std::cout << charArr[i][j] << " ";
-            }
-            std::cout << std::endl;
-        }
-         std::cout << totalComb<<"\n" << std::endl;
-        */
-
-        ///*
-        // iterate over all possible combinations for current length of the password
+        // iterate over all prebuilt password strings, starting from the end
         int i;
         #pragma omp parallel for shared(found) private(i)
         for (i = ALPHABET_SIZE - 1; i >= 0; i--) {
         // for (i = 0; i < ALPHABET_SIZE; i++) {
             if (found) continue;
+            // iterate over all possible combinations for current string
             for (int j = 0; j < totalComb; j++) {
                 if (found) continue;
                 std::string currStr;
@@ -80,34 +72,22 @@ void iterativeBrute(std::string cipher, bool verbose=true, bool flsh=true) {
                 if (verbose && !flsh) std::cout << currStr << std::endl;
                 if (currStr == cipher) {
                     if (verbose) std::cout << "\n" << std::endl;
-                    // return currStr;
                     std::cout << "password found: " << currStr << std::endl;
                     found = true;
                     continue;
                 }
                 iterator(charArr[i], len);
-                //usleep(500000);
             }
         }
-        //*/
     }
-    // return "";
 }
 
 void bruteForce(std::string cipher, bool verbose, bool flsh) {
-
-    // std::string found = iterativeBrute(cipher=cipher, verbose=verbose, flsh=flsh);
-    // if (!found.empty()) {
-    //     std::cout << "password found: " << found << std::endl;
-    // } else {
-    //     std::cout << "password not found!" << std::endl;
-    // }
-
     iterativeBrute(cipher=cipher, verbose=verbose, flsh=flsh);
 }
 
 int main() {
-    std::string plain = "zzzzzzz";
+    std::string plain = "yyyyyyy";
     bool verbose = false;
     bool flsh = false;
     bruteForce(plain, verbose, flsh);
