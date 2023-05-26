@@ -7,7 +7,8 @@
 
 #define ASCII_START 97 // a
 #define ASCII_END 122  // z
-#define PASS_LEN 6
+#define PASS_LEN 8
+#define THREADS 12
 
 void readFile(const char* filename, std::string* lines) {
     std::ifstream file(filename);
@@ -53,7 +54,7 @@ int* iterator(int* arr, int len) {
 std::string iterativeBrute(std::string cipher, bool verbose=true, bool flsh=true) {
     // iterate over possible pass lengths
     for (int len = 1; len <= PASS_LEN; len++) {
-        int totalComb = std::pow((ASCII_END - ASCII_START + 1), len);
+        long int totalComb = std::pow((ASCII_END - ASCII_START + 1), len);
         int charArr [len];
         std::fill_n(charArr, len, ASCII_START);
         // iterate over all possible combinations for current length of the password
@@ -91,7 +92,8 @@ int main() {
     readFile("./passwords", passwords);
 
     int i;
-#pragma omp parallel for private(i)
+    omp_set_dynamic(0);
+    #pragma omp parallel for private(i) num_threads(THREADS)
     for (i=0; i < 10; i++) {
         bruteForce(passwords[i], verbose, flsh);
     }
